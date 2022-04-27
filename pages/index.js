@@ -16,9 +16,9 @@ export default function Home() {
         <div className="flex items-center container mx-auto max-w-5xl justify-between h-full">
                       {/* Logo */}
                       <Link href="#">
-                        <a className="font-coiny text-xl md:text-3xl font-bold">
+                        <a className="font-mono text-xl md:text-3xl font-bold">
                           <span className="bg-gradient-to-br from-brand-blue to-brand-purple pr-2 bg-clip-text text-transparent ">
-                            Codez
+                            KollecTiV
                           </span>
                             NFTs
                         </a>
@@ -43,7 +43,7 @@ export default function Home() {
 
                           <li className="cursor-pointer">
                             <a
-                              href="https://twitter.com/DidemKkkaraasl1"
+                              href="https://twitter.com/RealKollekTiV_"
                               target="_blank"
                               rel="noreferrer"
                             >
@@ -78,6 +78,26 @@ export default function Home() {
                               </svg>
                             </a>
                           </li>
+
+                          <li className="cursor-pointer">
+                            <a
+                              href="https://www.reddit.com/user/theKollekTiV"
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <svg
+                                className="w-6 h-6 md:w-8 md:h-8"
+                                stroke="currentColor"
+                                fill="currentColor"
+                                strokeWidth="0"
+                                viewBox="0 0 1000 1000"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path d="M 500 0C 224 0 0 224 0 500C 0 776 224 1000 500 1000C 776 1000 1000 776 1000 500C 1000 224 776 0 500 0C 500 0 500 0 500 0 M 789 567C 790 574 791 581 791 588C 791 700 661 790 501 790C 341 790 211 700 211 588C 211 581 212 573 213 566C 188 555 170 530 170 500C 170 460 203 427 243 427C 262 427 280 436 293 448C 343 411 412 388 489 386C 489 386 526 213 526 213C 527 210 528 207 531 205C 534 203 538 203 541 203C 541 203 661 229 661 229C 670 211 687 200 707 200C 736 200 759 223 759 251C 759 280 736 303 707 303C 679 303 657 281 656 254C 656 254 548 231 548 231C 548 231 515 386 515 386C 591 389 659 412 708 448C 721 435 739 427 758 427C 799 427 831 460 831 500C 831 530 813 555 789 567C 789 567 789 567 789 567M 386 603C 415 603 438 580 438 552C 438 523 415 500 386 500C 358 500 334 523 334 552C 334 580 358 603 386 603C 386 603 386 603 386 603M 624 669C 619 664 610 664 605 669C 582 691 535 699 501 699C 467 699 419 691 397 669C 392 664 383 664 378 669C 373 674 373 683 378 688C 413 723 481 726 501 726C 520 726 588 724 623 688C 628 683 628 675 624 669C 624 669 624 669 624 669M 666 552C 666 523 642 500 614 500C 585 500 562 523 562 552C 562 580 585 603 614 603C 642 603 666 580 666 552C 666 552 666 552 666 552"></path>
+                              </svg>
+                            </a>
+                          </li>
+                          
                         </ul>
                       </nav>
         </div>   
@@ -85,7 +105,7 @@ export default function Home() {
       <div className="h-full w-full container max-w-5xl mx-auto flex flex-col items-center pt-4">
         <div className="flex flex-col items-center max-w-4xl w-full">
           <Link href="/mint" passHref>
-            <a className="mt-16 font-coiny uppercase inline-flex items-center px-6 oy-2 text-sm sm:text-2xl md:text-3xl font-medium text-center rounded text-rose-500 hover:bg-rose-600 hover:text-white">
+            <a className="mt-16 font-mono uppercase inline-flex items-center px-6 oy-2 text-sm sm:text-2xl md:text-3xl font-medium text-center rounded text-rose-500 hover:bg-rose-600 hover:text-white">
               Go to NFT Minting Page
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -105,24 +125,21 @@ export default function Home() {
           </Link>
 
           <div className="flex flex-col md:flex-row md:space-x-16 space-y-10 items-center mt-20 w-full">
-            {/* BoredApe Image */}
-            <img src='\images\9.png'
+
+            <img src='\images\9.jpg'
               className="w-64 h-64 rounded-md object-cover"
             />
 
             <div className="flex flex-col md:items-start items-center justify-center text-center font-coiny text-gray-800 px-4 md:px-0 py-10 mt-14">
-              <h2 className="font-bold text-2xl md:text-4xl uppercase">
-                About BoredApes
+              <h2 className="font-mono text-2xl md:text-4xl uppercase">
+                About KollecTiV
               </h2>
 
-              <p className="mt-6 text-lg">
-                {`BoredApes are a collection of 5,555 burning hot NFTs living in
-                the core of the blockchain. Each individual BoredApes is
-                carefully curated from over 150 traits, along with some
-                incredibly rare 1/1s that have traits that can't be found from
-                any other BoredApes. Our vision is to create an amazing project
-                that will shed light, joy, love, and creativity! Burn on,
-                BoredApes!`}
+              <p className="font-mono mt-6 text-lg">
+                {`KollecTiV is a young and upcoming NFT marketplace centered around the artist.
+                Providing a more than just a sea of NFT's, we offer the artist selective gallaries to choose from.
+                 Our vision is to create an amazing project
+                that will shed light, joy, love, and creativity!`}
               </p>
             </div>
           </div>
