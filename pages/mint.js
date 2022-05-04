@@ -1,28 +1,24 @@
 import { initOnboard } from '../utils/onboard'
+import {
+  init,
+  useConnectWallet,
+  useSetChain,
+  useWallets
+} from '@web3-onboard/react'
 import { useState, useEffect } from 'react'
 export default function Mint() {
   const [onboard, setOnboard] = useState(null)
-  const [walletAddress, setWalletAddress] = useState('')
-  useEffect(() => {
-    const onboardData = initOnboard({
-      address: (address) => setWalletAddress(address ? address : ''),
-      wallet: (wallet) => {
-        if (wallet.prover) {
-          window.localStorage.setItem('selectedWallet', wallet.name)
-        } else {
-          window.localStorage.RemoveItem('selectedWallet')
-        }
-      }
-    })
-    setOnboard(onboardData)
-  }, [])
-  const connectWalletHandler = async () => {
-    const walletSelected = await onboard.walletSelect()
-    if (walletSelected) {
-      await onboard.walletCheck()
-      window.location.reload(true)
-    }
-  }
+  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
+  const [{ chains, connectedChain, settingChain }, setChain] = useSetChain()
+  const connectedWallets = useWallets()
+
+  useEffect(()=>{
+    setOnboard(initOnboard)
+  },[])
+
+
+  
+
   return (
     <div className="flex flex-col items-center justify-center w-full h-full min-h-screen overflow-hidden bg-brand-background">
       <div className="relative flex flex-col items-center justify-center w-full h-full">
@@ -41,17 +37,18 @@ export default function Mint() {
               </p>
             </div>
             <h3 className="mt-3 text-sm tracking-widest text-transparent text-pink-200 bg-gradient-to-br bg-clip-text text-bold">
-              {walletAddress
-               ? walletAddress.slice(0,8) + '...' + walletAddress.slice(-4)
-               : ''}
+              {wallet?.accounts[0]?.address
+                ? wallet?.accounts[0]?.address.slice(0, 8) +
+                  '...' +
+                  wallet?.accounts[0]?.address.slice(-4)
+                : ''}
             </h3>
             <div className="flex flex-col w-full mt-10 md:flex-row md:space-x-14 md:mt-14">
               <div className="relative w-full">
                 <div>
                   <img
-                    class="mx-auto"
                     src="/images/maf.png"
-                    className="object-cover w-full sm:w-[280px] md:w-[250px] rounded-md"
+                    className="mx-auto object-cover w-full sm:w-[280px] md:w-[250px] rounded-md"
                   />
                 </div>
 
@@ -107,14 +104,20 @@ export default function Mint() {
                     </div>
                   </div>
 
-                  <div class="relative overflow-hidden bg-no-repeat bg-cover max-w-xs hover:animate-pulse">
-                    <button
-                      className="w-full px-6 py-3 mt-12 rounded-md shadow-lg font-coiny bg-gradient-to-br from-sky-500 via-yellow-200 to-fuchsia-600"
-                      onClick={connectWalletHandler}
-                    >
-                      Connect Wallet
-                    </button>
-                    <div class="absolute top-12 right-0 bottom-0 left-0 px-6 py-3 rounded-md overflow-hidden opacity-0 transition duration-300 ease-in-out bg-gradient-to-r from-sky-600 via-purple-500 to-fuchsia-800 hover:opacity-70"></div>
+                  <div className="relative max-w-xs overflow-hidden bg-no-repeat bg-cover hover:animate-pulse">
+                    {wallet ? (
+                      <button
+                        className="w-full px-6 py-3 mt-12 rounded-md shadow-lg font-coiny bg-gradient-to-br from-sky-500 via-yellow-200 to-fuchsia-600">
+                        Mint
+                      </button>
+                    ) : (
+                      <button className="w-full px-6 py-3 mt-12 rounded-md shadow-lg font-coiny bg-gradient-to-br from-sky-500 via-yellow-200 to-fuchsia-600"
+                        onClick={() => connect()}
+                      >
+                        Connect Wallet
+                      </button>
+                    )}
+
                   </div>
 
                   <div className="w-full h-full px-4 py-4 mt-8 border rounded-md border-brand-pink-400 text-start first-line:mx-auto md:mt-4">
