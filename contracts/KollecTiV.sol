@@ -1,18 +1,15 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;  // version must be the same in hardhat.config.js file
+pragma solidity ^0.8.9;  // version must be the same in line 12 of the hardhat.config.js file, these numbers have to match
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol"; // NFTs
-import "@openzeppelin/contracts/access/Ownable.sol"; // access control mechanism, granting exclusive access to specific functions (transfering ownership)
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol"; //related to security, prevents a contract from calling itself (nonReentrant modifier)
-import '@openzeppelin/contracts/finance/PaymentSplitter.sol'; // helps us divide payment if a group of people building selling art for pay mechansim
-import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol"; // creating a merkle tree from whitelisted accounts, when someone wants to mint they have to be whitelisted and provide proof, we verify in contract
+import "@openzeppelin/contracts/access/Ownable.sol"; // basic access control mechanism, account owner granting exclusive access to specific functions (transfering ownership). Owner can change with an transfer ownership function.
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol"; //related to security, prevents a contract from calling itself (nonReentrant modifier) directly or indirectly
+import '@openzeppelin/contracts/finance/PaymentSplitter.sol'; // helps us divide payment if a group of people building or selling art for pay mechansim, helps lower gas
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol"; // creating a merkle tree from whitelisted accounts (whitelist.js), we create a proof, and when someone wants to mint they have to be whitelisted and user does this by providing proof, we verify in contract
 import "@openzeppelin/contracts/utils/Counters.sol"; // counting the nfts
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-
-// Original Author @author codingwithdidem (Youtube channel) with modifications by Dan Espin
-
-
+// inheritances
 contract KollecTiV is 
     ERC721, 
     Ownable, 
@@ -22,39 +19,40 @@ contract KollecTiV is
     using Strings for uint256;
     using Counters for Counters.Counter;
 
-    bytes32 public root;
+    bytes32 public root; // this will help with whitelisted accounts
     
-    address proxyRegistryAddress; // depends on the network, different for RInkby , mainet, helps users to guest listings after minting process. opensea provides.
+    address proxyRegistryAddress; // Users-Guest list: depends on the network, different for Rinkeby , Mainet, helps users to guest listings after minting process. This is an address OpenSea provides you.
 
-    uint256 public maxSupply = 10;
+    uint256 public maxSupply = 10; // What is the supply of NFTs
 
-    string public baseURI; 
-    string public notRevealedUri = "ipfs://QmP36mVEHhXiiAcoWFH2BknKMeHUaw6wc1wco3hXVH9Ew3/Hidden Image.json";
+    string public baseURI; // this is the IPFS metadata of our NFT collection. IPFS is Pinata
+    string public notRevealedUri = "ipfs://QmP36mVEHhXiiAcoWFH2BknKMeHUaw6wc1wco3hXVH9Ew3/Hidden Image.json"; // this is the metadata of the hidden questionmark image. Its an image of a questionmark, users will see not revealed version of NFT when they first mint, and once revealed they will see what is in the base URI
     string public baseExtension = ".json";
 
     // controls for presale
-    bool public paused = false;
-    bool public revealed = false;
-    bool public presaleM = false;
-    bool public publicM = false;
+    bool public paused = false; // pause the contract
+    bool public revealed = false; // switching mechanism for base uri
+    bool public presaleM = false; // presale minting state
+    bool public publicM = false; // public minting state
 
     uint256 presaleAmountLimit = 1; // max amount a user can mint
-    mapping(address => uint256) public _presaleClaimed; // related to presale process how many have been minted by address of person
+    mapping(address => uint256) public _presaleClaimed; // related to presale process, shwoing how many have been minted by address of the person 
 
-    uint256 _price = 10000000000000000; // 0.01 ETH , price of the NFT
+    uint256 _price = 10000000000000000; // 0.01 ETH , price of the NFT in Wei format, you can check on  (https://eth-converter.com/)
 
     Counters.Counter private _tokenIds; // token ids counter
 
     uint256[] private _teamShares = [25, 35, 40]; // 3 PEOPLE IN THE TEAM
     address[] private _team = [
-        0xC94D14C001012c657977dB30E76A23087f2464Ef, // Admin Account gets 25% of the total revenue
-        0xA821241d0a43EEcE179B91e8EB57ED10Dc63507D, // Test Account gets 35% of the total revenue
-        0xbb6c74C9e991f41825a6d5e8ec78270d9c7768c9 // VIP Account gets 40% of the total revenue
+        0x3E3b8967c39F43C64B267AD8292236b314D233Df, //  Account 1 gets 25% of the total revenue
+        0x92B6643D1377ef3500E191c4C39c79a7791C759B, // Account 7 gets 35% of the total revenue
+        0x73c43f695abC0326016186F98630024bbf0Fa7cb // Account 8 gets 40% of the total revenue
     ];
 
 
         // PaymentSplitter(_team, _teamShares)  Split the payment based on the teamshares percentages
        // ReentrancyGuard() A modifier that can prevent reentrancy during certain functions
+      // uri is the base-uri of the ipfs data of our collection 
     constructor(string memory uri, bytes32 merkleroot, address _proxyRegistryAddress)
         ERC721("KollecTiV", "KLTV")
         PaymentSplitter(_team, _teamShares)
@@ -70,7 +68,7 @@ contract KollecTiV is
         baseURI = _tokenBaseURI;
     }
     
-    // sets the base URI
+    // returns the base URI
     function _baseURI() internal view override returns (string memory) {
         return baseURI;
     }
@@ -78,7 +76,7 @@ contract KollecTiV is
     function reveal() public onlyOwner {
         revealed = true;
     }
-    // if providing wrong root, only owner can reveal nft
+    // if providing wrong root, only owner can call this and only owner can reveal nft
     function setMerkleRoot(bytes32 merkleroot) 
     onlyOwner 
     public 
@@ -90,7 +88,7 @@ contract KollecTiV is
         require(msg.sender == tx.origin, "Not allowed origin");
         _;
     }
-    // used in mint presale methods, it takes the proof and verifies it
+    // used in mint presale methods, it takes the proof and verifies it, use in presale to verify
     modifier isValidMerkleProof(bytes32[] calldata _proof) {
          require(MerkleProof.verify(
             _proof,
@@ -107,40 +105,41 @@ contract KollecTiV is
     function togglePresale() public onlyOwner {
         presaleM = !presaleM;
     }
-
+    // toggle public sale state
     function togglePublicSale() public onlyOwner {
         publicM = !publicM;
     }
 
-    // you have to be in the whitelisted accounts to call this
+    // you have to be in the whitelisted accounts to call this. // are you in the whitelist or not isValidMerkleProof(_proof)
     function presaleMint(address account, uint256 _amount, bytes32[] calldata _proof)
     external
     payable
-    isValidMerkleProof(_proof)
+    isValidMerkleProof(_proof) 
     onlyAccounts
     {
         require(msg.sender == account,          "KollecTiV: Not allowed"); // security check
-        require(presaleM,                       "KollecTiV: Presale is OFF"); // check if in pre-sale
-        require(!paused,                        "KollecTiV: Contract is paused"); // check if paused
+        require(presaleM,                       "KollecTiV: Presale is OFF"); // check if in pre-sale is active
+        require(!paused,                        "KollecTiV: Contract is paused"); // check if not paused
         require(
             _amount <= presaleAmountLimit,      "KollecTiV: You can't mint so much tokens"); // user doesnt exceed mint amount
         require(
             _presaleClaimed[msg.sender] + _amount <= presaleAmountLimit,  "KollecTiV: You can't mint so much tokens"); // number of nfts minted
 
-
+        // number of nfts minted up until now
         uint current = _tokenIds.current(); 
-
+        // is the max supply exceeded
         require(
             current + _amount <= maxSupply,
             "KollecTiV: max supply exceeded"
         );
+        // is there enough Eth in the wallet to mint
         require(
             _price * _amount <= msg.value,
             "KollecTiV: Not enough ETHER sent"
         );
-             
+        // keep track of the addresses minted amount  
         _presaleClaimed[msg.sender] += _amount;
-
+        // how many total nfts minted
         for (uint i = 0; i < _amount; i++) {
             mintInternal();
         }
@@ -171,14 +170,14 @@ contract KollecTiV is
             mintInternal();
         }
     }
-
+    // non re-entrant prevents calling itself, minting process.
     function mintInternal() internal nonReentrant {
         _tokenIds.increment();
 
         uint256 tokenId = _tokenIds.current();
         _safeMint(msg.sender, tokenId);
     }
-    //  if 
+    //  if reveal is false we are showing not reveal uri, if true we get the base uri
     function tokenURI(uint256 tokenId)
         public
         view
@@ -207,7 +206,7 @@ contract KollecTiV is
                 )
                 : "";
     }
-
+    
     function setBaseExtension(string memory _newBaseExtension)
         public
         onlyOwner

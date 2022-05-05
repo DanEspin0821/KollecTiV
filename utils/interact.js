@@ -3,10 +3,10 @@ const { MerkleTree } = require('merkletreejs')
 const keccak256 = require('keccak256')
 const whitelist = require('../scripts/whitelist.js')
 
-const web3 = createAlchemyWeb3(process.env.NEXT_PUBLIC_ALCHEMY_RPC_URL)
+const web3 = createAlchemyWeb3(process.env.NEXT_PUBLIC_ALCHEMY_RPCURL)
 import { config } from '../dapp.config'
 
-const contract = require('../artifacts/contracts/BoredApe.sol/BoredApe.json')
+const contract = require('../artifacts/contracts/KollecTiV.sol/KollecTiV.json')
 const nftContract = new web3.eth.Contract(contract.abi, config.contractAddress)
 
 // Calculate merkle root from the whitelist array
@@ -77,6 +77,7 @@ export const presaleMint = async (mintAmount) => {
     value: parseInt(
       web3.utils.toWei(String(config.price * mintAmount), 'ether')
     ).toString(16), // hex
+    gas: String(300000*mintAmount),
     data: nftContract.methods
       .presaleMint(window.ethereum.selectedAddress, mintAmount, proof)
       .encodeABI(),
@@ -101,7 +102,7 @@ export const presaleMint = async (mintAmount) => {
   } catch (error) {
     return {
       success: false,
-      status: '😞 Smth went wrong:' + error.message
+      status: '😞 Something went wrong:' + error.message
     }
   }
 }
@@ -126,6 +127,7 @@ export const publicMint = async (mintAmount) => {
     value: parseInt(
       web3.utils.toWei(String(config.price * mintAmount), 'ether')
     ).toString(16), // hex
+    gas: String(300000*mintAmount),
     data: nftContract.methods.publicSaleMint(mintAmount).encodeABI(),
     nonce: nonce.toString(16)
   }
@@ -148,7 +150,7 @@ export const publicMint = async (mintAmount) => {
   } catch (error) {
     return {
       success: false,
-      status: '😞 Smth went wrong:' + error.message
+      status: '😞 Something went wrong:' + error.message
     }
   }
 }
