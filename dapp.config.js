@@ -1,9 +1,9 @@
 const config = {
   title: "KollecTiV Dapp",
   description: "A dapp for degens and aristocrats",
-  contractAddress: '0xcCE228DA3671347111c6480e07D04a25ABA4eaD5',
+  contractAddress: '0xC492B2E44D2FAA06f5a139aC68A30bfdA97868dc',
   maxMintAmount: 10,
-  presaleMaxMintAmount: 1,
+  presaleMaxMintAmount: 2,
   price: 0.01
 }
 

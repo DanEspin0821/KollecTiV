@@ -12,7 +12,7 @@
  */
 
 module.exports = [
-        0x3E3b8967c39F43C64B267AD8292236b314D233Df, //  Account 1 gets 25% of the total revenue
-        0x92B6643D1377ef3500E191c4C39c79a7791C759B, // Account 7 gets 35% of the total revenue
-        0x73c43f695abC0326016186F98630024bbf0Fa7cb // Account 8 gets 40% of the total revenue
+        0xf031c008aC49f1022617B0Dc369CdbA59afcfEE9, //  Account Dan gets 25% of the total revenue
+        0xA1Cd0d52CD01Bebd30cfEB26D791dE1019942a6C, // Account Rochelle gets 35% of the total revenue
+        0xbdd2c7c4B03cff16b6A56c6C5c8D3958713756e0 // Account Gregg gets 40% of the total revenue
 ]
