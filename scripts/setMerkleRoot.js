@@ -11,7 +11,7 @@ const keccak256 = require('keccak256')
 const whitelist = require('./whitelist.js')
 
 async function main() {
-  const nftFactory = await hre.ethers.getContractFactory('BoredApe')
+  const nftFactory = await hre.ethers.getContractFactory('KollecTiV')
   const nftContract = await nftFactory.attach(
     '0xC492B2E44D2FAA06f5a139aC68A30bfdA97868dc' // Deployed contract address
   )

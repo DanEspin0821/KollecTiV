@@ -4,9 +4,9 @@ import walletConnectModule from '@web3-onboard/walletconnect'
 import coinbaseModule from '@web3-onboard/coinbase'
 import fortmaticModule from '@web3-onboard/fortmatic'
 
-import ApeIcon from '../Ape'
+// import ApeIcon from '../Ape'
 
-const RPC_URL = process.env.NEXT_PUBLIC_ALCHEMY_RPC_URL
+const RPC_URL = process.env.NEXT_PUBLIC_ALCHEMY_RPCURL
 
 const fortmatic = fortmaticModule({
   apiKey: process.env.NEXT_PUBLIC_FORTMATIC_KEY
@@ -45,9 +45,8 @@ const initOnboard = init({
     // }
   ],
   appMetadata: {
-    name: 'BoredApes',
-    icon: ApeIcon,
-    description: 'We are some bored apes',
+    name: 'KollecTiV',
+    description: 'We are the KollecTiV',
     recommendedInjectedWallets: [
       { name: 'MetaMask', url: 'https://metamask.io' },
       { name: 'Coinbase', url: 'https://wallet.coinbase.com/' }

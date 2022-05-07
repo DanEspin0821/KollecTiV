@@ -95,8 +95,8 @@ export default function Mint() {
     <div className="flex flex-col items-center justify-center w-full h-full min-h-screen overflow-hidden bg-brand-background">
       <div className="relative flex flex-col items-center justify-center w-full h-full">
         <img
-          src="/images/blur.jpeg"
-          className="absolute inset-auto block object-cover w-full min-h-screen animate-pulse-slow"
+          src="/images/blur.jpeg " rel="noreferrer"
+          className="absolute inset-auto block object-cover w-full min-h-screen animate-pulse-slow "
         />
         <div className="flex flex-col items-center justify-center w-full h-full px-2 md:px-10">
           <div className="relative flex flex-col items-center w-full px-2 py-4 rounded-md z-1 md:max-w-3xl bg-gray-900/90 filter bg-gradient-to-r from-violet-500 via-rose-600 to-teal-600 first-line:filter backdrop-blur-sm md:px-10 hover:bg-gradient-to-r hover:to-blue-700 hover:from-yellow-500 hover:via-red-700">
@@ -119,7 +119,7 @@ export default function Mint() {
               <div className="relative w-full">
                 <div>
                   <img
-                    src="/images/maf.png"
+                    src="/images/maf.png" rel="noreferrer"
                     className="mx-auto object-cover w-full sm:w-[280px] md:w-[250px] rounded-md"
                   />
                 </div>
@@ -222,6 +222,7 @@ export default function Mint() {
                   <a
                       href={'https://rinkeby.etherscan.io/address/0xC492B2E44D2FAA06f5a139aC68A30bfdA97868dc'}
                       target="_blank"
+                      rel="noreferrer"
                       className="mt-4"
                     >
                       <span className=" break-all ... font-bold bg-gradient-to-br from-sky-500 via-yellow-200 to-fuchsia-600">

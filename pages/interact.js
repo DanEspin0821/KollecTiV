@@ -3,10 +3,10 @@ const { MerkleTree } = require('merkletreejs')
 const keccak256 = require('keccak256')
 const whitelist = require('../scripts/whitelist.js')
 
-const web3 = createAlchemyWeb3(process.env.NEXT_PUBLIC_ALCHEMY_RPC_URL)
+const web3 = createAlchemyWeb3(process.env.NEXT_PUBLIC_ALCHEMY_RPCURL)
 import { config } from '../dapp.config'
 
-const contract = require('../artifacts/contracts/BoredApe.sol/BoredApe.json')
+const contract = require('../artifacts/contracts/KollecTiV.sol/KollecTiV.json')
 const nftContract = new web3.eth.Contract(contract.abi, config.contractAddress)
 
 // Calculate merkle root from the whitelist array
@@ -92,7 +92,7 @@ export const presaleMint = async (mintAmount) => {
     return {
       success: true,
       status: (
-        <a href={`https://rinkeby.etherscan.io/tx/${txHash}`} target="_blank">
+        <a href={`https://rinkeby.etherscan.io/tx/${txHash}`} target="_blank" rel="noreferrer">
           <p>✅ Check out your transaction on Etherscan:</p>
           <p>{`https://rinkeby.etherscan.io/tx/${txHash}`}</p>
         </a>
@@ -139,7 +139,7 @@ export const publicMint = async (mintAmount) => {
     return {
       success: true,
       status: (
-        <a href={`https://rinkeby.etherscan.io/tx/${txHash}`} target="_blank">
+        <a href={`https://rinkeby.etherscan.io/tx/${txHash}`} target="_blank" rel="noreferrer">
           <p>✅ Check out your transaction on Etherscan:</p>
           <p>{`https://rinkeby.etherscan.io/tx/${txHash}`}</p>
         </a>
